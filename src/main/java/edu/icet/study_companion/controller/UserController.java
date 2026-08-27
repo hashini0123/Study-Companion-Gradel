@@ -20,4 +20,10 @@ public class UserController {
         return new ResponseEntity<>(userDTO, HttpStatus.OK);
     }
 
+    @PostMapping("/register")
+    public ResponseEntity<UserDTO> register(@RequestBody UserDTO userDTO){
+        UserDTO savedUser = userService.register(userDTO);
+        return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
+    }
+
 }
