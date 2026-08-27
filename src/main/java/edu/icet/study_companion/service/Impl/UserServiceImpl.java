@@ -5,8 +5,10 @@ import edu.icet.study_companion.entity.User;
 import edu.icet.study_companion.repository.UserRepository;
 import edu.icet.study_companion.service.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 
@@ -54,5 +56,35 @@ public class UserServiceImpl implements UserService {
                 savedUser.getRole(),
                 savedUser.getCreated_at()
         );
+    }
+
+    @Override
+    public UserDTO register(UserDTO userDTO) {
+        if (userRepository.existsByEmail(userDTO.getEmail())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email already exists");
+        }
+
+        User user = new User();
+        user.setUser_name(userDTO.getUser_name());
+        user.setEmail(userDTO.getEmail());
+        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        user.setRole("USER");
+        user.setCreated_at(LocalDateTime.now());
+
+        User savedUser = userRepository.save(user);
+
+        UserDTO responseDTO = mapToDTO(savedUser);
+        responseDTO.setPassword(null);
+        return responseDTO;
+    }
+
+    private UserDTO mapToDTO(User user) {
+        UserDTO dto = new UserDTO();
+        dto.setId(user.getId());
+        dto.setUser_name(user.getUser_name());
+        dto.setEmail(user.getEmail());
+        dto.setRole(user.getRole());
+        dto.setCreated_at(user.getCreated_at());
+        return dto;
     }
 }

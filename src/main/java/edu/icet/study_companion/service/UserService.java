@@ -6,4 +6,6 @@ public interface UserService {
     UserDTO getUserById(Long id);
 
     UserDTO registerUser(UserDTO userDTO);
+
+    UserDTO register(UserDTO userDTO);
 }
