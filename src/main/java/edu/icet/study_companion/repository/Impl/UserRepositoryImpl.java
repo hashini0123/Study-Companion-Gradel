@@ -79,4 +79,14 @@ public class UserRepositoryImpl implements UserRepository {
 
         return user;
     }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        String sql = "SELECT * FROM users WHERE email = ?";
+
+        Integer count = jdbcTemplate.queryForObject(sql, Integer.class, email);
+        return count != null && count > 0;
+    }
+
+
 }
