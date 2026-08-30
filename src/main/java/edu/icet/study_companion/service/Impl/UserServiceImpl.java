@@ -1,5 +1,6 @@
 package edu.icet.study_companion.service.Impl;
 
+import edu.icet.study_companion.dto.UpdateUserRequestDTO;
 import edu.icet.study_companion.dto.UserDTO;
 import edu.icet.study_companion.entity.User;
 import edu.icet.study_companion.repository.UserRepository;
@@ -76,6 +77,24 @@ public class UserServiceImpl implements UserService {
         UserDTO responseDTO = mapToDTO(savedUser);
         responseDTO.setPassword(null);
         return responseDTO;
+    }
+
+    @Override
+    public UserDTO updateUser(Long id, UpdateUserRequestDTO request) {
+
+        User existingUser = userRepository.findById(id);
+        if (existingUser == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+        }
+
+        if (!existingUser.getEmail().equals(request.getEmail())
+                && userRepository.existsByEmail(request.getEmail())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email already in use");
+        }
+
+        User updatedUser = userRepository.update(id, request.getUser_name(), request.getEmail());
+
+        return mapToDTO(updatedUser);
     }
 
     private UserDTO mapToDTO(User user) {

@@ -1,5 +1,6 @@
 package edu.icet.study_companion.service;
 
+import edu.icet.study_companion.dto.UpdateUserRequestDTO;
 import edu.icet.study_companion.dto.UserDTO;
 
 public interface UserService {
@@ -8,4 +9,6 @@ public interface UserService {
     UserDTO registerUser(UserDTO userDTO);
 
     UserDTO register(UserDTO userDTO);
+
+    UserDTO updateUser(Long id, UpdateUserRequestDTO request);
 }
