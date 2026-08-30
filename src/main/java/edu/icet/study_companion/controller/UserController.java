@@ -1,5 +1,6 @@
 package edu.icet.study_companion.controller;
 
+import edu.icet.study_companion.dto.UpdateUserRequestDTO;
 import edu.icet.study_companion.dto.UserDTO;
 import edu.icet.study_companion.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,15 @@ public class UserController {
     public ResponseEntity<UserDTO> register(@RequestBody UserDTO userDTO){
         UserDTO savedUser = userService.register(userDTO);
         return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<UserDTO> updateUser(
+            @PathVariable("id") Long id,
+            @RequestBody UpdateUserRequestDTO request) {
+
+        UserDTO updatedUser = userService.updateUser(id, request);
+        return new ResponseEntity<>(updatedUser, HttpStatus.OK);
     }
 
 }
