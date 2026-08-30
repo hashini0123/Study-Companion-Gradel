@@ -11,4 +11,6 @@ public interface UserRepository {
     User save(User user);
 
     boolean existsByEmail(String email);
+
+    User update(Long id, String userName, String email);
 }
