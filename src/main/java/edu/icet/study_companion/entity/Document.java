@@ -17,7 +17,7 @@ public class Document {
     private Integer user_id;
     private String file_name;
     private String file_path;
-    private String file_Size;
+    private String file_size;
     private String file_type;
     private String upload_status;
     private LocalDateTime upload_at;
