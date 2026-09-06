@@ -13,4 +13,6 @@ public interface DocumentRepository {
     List<Document> findByUserId(Integer userId);
 
     Document findById(Long id);
+
+    void deleteById(Long id);
 }

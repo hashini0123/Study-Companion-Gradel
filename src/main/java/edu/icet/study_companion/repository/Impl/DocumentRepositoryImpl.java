@@ -80,4 +80,10 @@ public class DocumentRepositoryImpl implements DocumentRepository {
 
         return result.isEmpty() ? null : result.get(0);
     }
+
+    @Override
+    public void deleteById(Long id) {
+        String sql = "DELETE FROM documents WHERE id = ?";
+        jdbcTemplate.update(sql, id);
+    }
 }
