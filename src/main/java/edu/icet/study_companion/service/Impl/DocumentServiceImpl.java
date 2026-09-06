@@ -1,6 +1,7 @@
 package edu.icet.study_companion.service.Impl;
 
 import edu.icet.study_companion.dto.DocumentDTO;
+import edu.icet.study_companion.dto.DocumentListItemDTO;
 import edu.icet.study_companion.entity.Document;
 import edu.icet.study_companion.repository.DocumentRepository;
 import edu.icet.study_companion.service.DocumentService;
@@ -16,7 +17,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -65,5 +68,19 @@ public class DocumentServiceImpl implements DocumentService {
         } catch (IOException e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "File upload failed: " + e.getMessage());
         }
+    }
+
+    @Override
+    public List<DocumentListItemDTO> getDocumentsByUserId(Integer userId) {
+        List<Document> documents = documentRepository.findByUserId(userId);
+
+        return documents.stream()
+                .map(doc -> {
+                    DocumentListItemDTO dto = new DocumentListItemDTO();
+                    dto.setId(doc.getId());
+                    dto.setFile_name(doc.getFile_name());
+                    return dto;
+                })
+                .collect(Collectors.toList());
     }
 }
