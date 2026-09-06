@@ -13,4 +13,6 @@ public interface DocumentService {
     List<DocumentListItemDTO> getDocumentsByUserId(Integer userId);
 
     DocumentDetailsDTO getDocumentById(Long id, Integer userId);
+
+    String deleteDocument(Long id, Integer userId);
 }

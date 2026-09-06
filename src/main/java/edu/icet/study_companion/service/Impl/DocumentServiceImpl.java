@@ -106,4 +106,27 @@ public class DocumentServiceImpl implements DocumentService {
 
         return dto;
     }
+
+    @Override
+    public String deleteDocument(Long id, Integer userId) {
+        Document document = documentRepository.findById(id);
+
+        if (document == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Document not found");
+        }
+
+        if (!document.getUser_id().equals(userId)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Document not found");
+        }
+
+        try {
+            Path filePath = Paths.get(document.getFile_path());
+            Files.deleteIfExists(filePath);
+        } catch (IOException e) {
+
+        }
+        documentRepository.deleteById(id);
+
+        return "Document Deleted";
+    }
 }
