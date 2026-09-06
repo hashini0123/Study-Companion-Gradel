@@ -11,4 +11,6 @@ public interface DocumentRepository {
     Document save(Document document);
 
     List<Document> findByUserId(Integer userId);
+
+    Document findById(Long id);
 }

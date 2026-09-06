@@ -60,4 +60,24 @@ public class DocumentRepositoryImpl implements DocumentRepository {
             return document;
         }, userId);
     }
+
+    @Override
+    public Document findById(Long id) {
+        String sql = "SELECT * FROM documents WHERE id = ?";
+
+        List<Document> result = jdbcTemplate.query(sql, (rs, rowNum) -> {
+            Document document = new Document();
+            document.setId(rs.getLong("id"));
+            document.setUser_id(rs.getInt("user_id"));
+            document.setFile_name(rs.getString("file_name"));
+            document.setFile_path(rs.getString("file_path"));
+            document.setFile_size(rs.getString("file_size"));
+            document.setFile_type(rs.getString("file_type"));
+            document.setUpload_status(rs.getString("upload_status"));
+            document.setUpload_at(rs.getTimestamp("uploaded_at").toLocalDateTime());
+            return document;
+        }, id);
+
+        return result.isEmpty() ? null : result.get(0);
+    }
 }
