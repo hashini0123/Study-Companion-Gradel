@@ -1,6 +1,7 @@
 package edu.icet.study_companion.service.Impl;
 
 import edu.icet.study_companion.dto.DocumentDTO;
+import edu.icet.study_companion.dto.DocumentDetailsDTO;
 import edu.icet.study_companion.dto.DocumentListItemDTO;
 import edu.icet.study_companion.entity.Document;
 import edu.icet.study_companion.repository.DocumentRepository;
@@ -82,5 +83,27 @@ public class DocumentServiceImpl implements DocumentService {
                     return dto;
                 })
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public DocumentDetailsDTO getDocumentById(Long id, Integer userId) {
+        Document document = documentRepository.findById(id);
+        if (document == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Document not found");
+        }
+        if (!document.getUser_id().equals(userId)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Document not found");
+        }
+
+        DocumentDetailsDTO dto = new DocumentDetailsDTO();
+        dto.setId(document.getId());
+        dto.setUser_id(document.getUser_id());
+        dto.setFile_name(document.getFile_name());
+        dto.setFile_type(document.getFile_type());
+        dto.setFile_size(document.getFile_size());
+        dto.setUpload_status(document.getUpload_status());
+        dto.setUpload_at(document.getUpload_at());
+
+        return dto;
     }
 }
