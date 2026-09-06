@@ -1,6 +1,7 @@
 package edu.icet.study_companion.controller;
 
 import edu.icet.study_companion.dto.DocumentDTO;
+import edu.icet.study_companion.dto.DocumentDetailsDTO;
 import edu.icet.study_companion.dto.DocumentListItemDTO;
 import edu.icet.study_companion.service.DocumentService;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,15 @@ public class DocumentController {
     @GetMapping
     public ResponseEntity<List<DocumentListItemDTO>> getDocumentsByUSerId(@RequestParam("user_id") Integer userId){
         List<DocumentListItemDTO> document = documentService.getDocumentsByUserId(userId);
+        return new ResponseEntity<>(document, HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<DocumentDetailsDTO> getDocumentById(
+            @PathVariable("id") Long id,
+            @RequestParam("user_id") Integer userId) {
+
+        DocumentDetailsDTO document = documentService.getDocumentById(id, userId);
         return new ResponseEntity<>(document, HttpStatus.OK);
     }
 
