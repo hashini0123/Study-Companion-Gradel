@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
@@ -40,5 +41,23 @@ public class DocumentRepositoryImpl implements DocumentRepository {
         document.setId(generatedId);
 
         return document;
+    }
+
+    @Override
+    public List<Document> findByUserId(Integer userId) {
+        String sql = "SELECT * FROM documents WHERE user_id = ?";
+
+        return jdbcTemplate.query(sql, (rs, rowNum) -> {
+            Document document = new Document();
+            document.setId(rs.getLong("id"));
+            document.setUser_id(rs.getInt("user_id"));
+            document.setFile_name(rs.getString("file_name"));
+            document.setFile_path(rs.getString("file_path"));
+            document.setFile_size(rs.getString("file_size"));
+            document.setFile_type(rs.getString("file_type"));
+            document.setUpload_status(rs.getString("upload_status"));
+            document.setUpload_at(rs.getTimestamp("uploaded_at").toLocalDateTime());
+            return document;
+        }, userId);
     }
 }
