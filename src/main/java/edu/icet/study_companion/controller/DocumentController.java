@@ -10,7 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -41,6 +43,19 @@ public class DocumentController {
 
         DocumentDetailsDTO document = documentService.getDocumentById(id, userId);
         return new ResponseEntity<>(document, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Map<String, String>> deleteDocument(
+            @PathVariable("id") Long id,
+            @RequestParam("user_id") Integer userId) {
+
+        String message = documentService.deleteDocument(id, userId);
+
+        Map<String, String> response = new HashMap<>();
+        response.put("message", message);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 }
